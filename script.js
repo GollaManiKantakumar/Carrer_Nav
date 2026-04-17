@@ -2353,7 +2353,7 @@ document.getElementById('skilling-form').addEventListener('submit', async functi
 
     try {
         const token = localStorage.getItem('auth_token');
-        const res = await fetch('http://https://carrer-nav-2.onrender.com:5000/api/analyze-resume', {
+        const res = await fetch('https://carrer-nav-2.onrender.com/api/analyze-resume', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${token}` },
             body: formData
@@ -2716,7 +2716,7 @@ if (editForm) {
 
         try {
             const token = localStorage.getItem('auth_token');
-            const res = await fetch('http://https://carrer-nav-2.onrender.com:5000/api/profile/update', {
+            const res = await fetch('https://carrer-nav-2.onrender.com/api/profile/update', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: formData
@@ -2757,7 +2757,7 @@ async function refreshProfile() {
     const token = localStorage.getItem('auth_token');
     if(!token) return;
     try {
-        const res = await fetch('http://https://carrer-nav-2.onrender.com:5000/api/profile', {
+        const res = await fetch('https://carrer-nav-2.onrender.com/api/profile', {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         if(res.ok) {
@@ -2791,7 +2791,7 @@ async function loadHistoricalPaths() {
     const token = localStorage.getItem('auth_token');
     if(!token) return;
     try {
-        const res = await fetch('http://https://carrer-nav-2.onrender.com:5000/api/roadmaps/history', {
+        const res = await fetch('https://carrer-nav-2.onrender.com/api/roadmaps/history', {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         if(res.ok) {
