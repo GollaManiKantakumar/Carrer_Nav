@@ -1,0 +1,45 @@
+# CareerNav AI - Project Architecture and Logic Implementation Guide
+
+This document outlines the core technical implementations of the CareerNav AI platform based on user inquiries.
+
+## 1. Connecting the Roadmap to YouTube
+The Visual Roadmaps functionality bridges the conceptual curriculum with actual educational video content through dynamic search URL construction.
+
+**How it works:**
+*   **Mermaid.js Flowchart Mapping:** The application uses Mermaid.js to dynamically render an educational flowchart based on predefined JSON syllabuses (parsed from `Roadmap.txt`).
+*   **Dynamic Query Formulation:** When a user clicks on a topic or subtopic node (e.g., a yellow interactive box), the system's JavaScript intercepts the action. It takes the user's target role, the main topic, and the specific subtopic, and combines them into an optimized search string (e.g., "Data Analyst Data Cleaning Python tutorial").
+*   **Execution:** It encodes this string using `encodeURIComponent()` to ensure it's web-safe, and then constructs a YouTube search URL: `https://www.youtube.com/results?search_query=[ENCODED_QUERY]`.
+*   **Redirection:** Finally, it uses `window.open` (or Mermaid's native click URL properties) to launch a new browser tab directly into those customized YouTube search results, instantaneously providing the user with relevant tutorial videos without needing a hardcoded database of thousands of video links.
+
+## 2. Construction of the "AI Consul" Chatbot
+The Neural Assistant chatbot operates entirely on the client-side, talking directly to the AI infrastructure via REST API, ensuring fast, low-latency conversational responses.
+
+**How it works:**
+*   **Frontend Interface:** The chatbot is built using DOM injection in `index.html`. It collects user text via an input field and displays messages in a scrolling chat window.
+*   **Prompt Engineering:** When the user hits send, JavaScript in `script.js` intercepts the message. Before sending it to the AI, it wraps the user's message in a hidden "System Prompt" instruction. This prompt forces the AI into character: *"You are CareerNav AI Consul... Answer the user's question in a concise summary of 5 to 6 lines maximum."*
+*   **API Transmission:** The script makes an asynchronous `fetch()` POST request directly to the Google Generative Language REST endpoint (`https://generativelanguage.googleapis.com/...:generateContent`).
+*   **Response Handling:** The resulting JSON payload is unwrapped, and the model's text response is dynamically injected into the chat window with appropriate HTML styling.
+
+## 3. Core Models and Technologies Used
+The project is built on a modern, lightweight, and highly interactive stack combining Python and Vanilla web technologies.
+
+*   **Primary AI Model:** Google Gemini API (`gemini-2.5-flash`). This incredibly fast multimodal model is dual-purposed: 
+    1.  On the Python backend, it is used as a "Genome Parser" to analyze uploaded PDF resumes against industry standards to calculate Match Scores and generate customized Missing Skills roadmaps.
+    2.  On the JavaScript frontend, it drives the real-time AI Consul chat.
+*   **Frontend Technologies:**
+    *   **HTML5 / Vanilla CSS3:** For the complex glassmorphism UI, grid layouts, and custom sliding drawers.
+    *   **Vanilla JavaScript:** Drives all client-side logic, preventing the bloat of frameworks like React.
+    *   **Libraries:** 
+        *   `Mermaid.js` (for rendering the visual interactive roadmaps).
+        *   `Chart.js` (for rendering the 3D analytical radar charts on the Deep Profile page).
+        *   `tsParticles` (for the highly optimized, 3D interactive, cursor-repulsing neural network background).
+*   **Backend Technologies:**
+    *   **Python / Flask:** A lightweight web application framework handling the API routing and file parsing (PDF resume processing).
+    
+## 4. Data Storage and Persistence
+The system utilizes a split-storage architecture, balancing fast local retrieval with permanent backend records.
+
+*   **Client-Side (Browser LocalStorage):** For immediate, non-sensitive session data that needs to survive page refreshes, the app heavily utilizes the browser's `localStorage`. 
+    *   `user_profile`: Stores the parsed resume genome (name, matched role, score) to render the UI instantaneously across pages.
+    *   `activity_ledger`: Maintains an array tracking the user's progression and history on the platform.
+*   **Server-Side (SQLite Database):** The Python `app.py` backend establishes connections to a local `sqlite3` database file (typically `database.db`). When the backend parses a user's resume, the resulting deep evaluation, Match Percentage, and personalized skills delta are serialized and injected into SQL tables ensuring data permanence across different user sessions.

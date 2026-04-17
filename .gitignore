@@ -1,0 +1,26 @@
+# Environment variables — NEVER commit this
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+venv/
+venv2/
+.venv/
+
+# Database (contains user data)
+*.db
+
+# Uploaded resumes
+uploads/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
