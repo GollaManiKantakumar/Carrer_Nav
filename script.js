@@ -2544,7 +2544,7 @@ async function sendChat() {
     try {
         const systemPrompt = `You are CareerNav AI Consul, a career guidance assistant. Answer the user's question in a concise summary of 5 to 6 lines maximum. Do not write long paragraphs. Be direct and focused.\n\nUser: ${msg}`;
         const token = localStorage.getItem('auth_token');
-        const resp = await fetch(`http://127.0.0.1:5000/api/chat`, {
+        const resp = await fetch(`https://carrer-nav-2.onrender.com/api/chat`, {
             method: "POST", 
             headers: {
                 "Content-Type": "application/json",
