@@ -9,19 +9,12 @@ from flask import Flask, request, jsonify, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
-from dotenv import load_dotenv
+from settings import SECRET_KEY, GEMINI_API_KEY, DB_NAME, UPLOAD_FOLDER, DEBUG, PORT, HOST
 
-load_dotenv()  # Load .env file
-
-UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 app = Flask(__name__, static_folder='.', static_url_path='')
 CORS(app)
-
-SECRET_KEY = os.getenv('SECRET_KEY', 'fallback_dev_key_change_in_production')
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
-DB_NAME = 'users.db'
 
 def init_db():
     conn = sqlite3.connect(DB_NAME)
@@ -454,4 +447,4 @@ def chat_proxy(current_user):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=DEBUG, port=PORT, host=HOST)
